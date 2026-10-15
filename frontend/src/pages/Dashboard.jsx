@@ -20,7 +20,7 @@ import {
   Package,
   TrendingUp,
 } from 'lucide-react';
-import api from '../services/api';
+import api, { clearAuthToken } from '../services/api';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
@@ -76,8 +76,10 @@ const Dashboard = () => {
   const handleLogout = async () => {
     try {
       await api.post('/customers/logout');
-      navigate('/login');
     } catch {
+      // ignore backend logout issues and clear local auth state anyway
+    } finally {
+      clearAuthToken();
       navigate('/login');
     }
   };

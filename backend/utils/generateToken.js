@@ -5,12 +5,12 @@ const generateToken = (res, customerId) => {
     expiresIn: '30d',
   });
 
-  const isProduction = process.env.NODE_ENV === 'production';
+  const isCrossSiteProduction = Boolean(process.env.NODE_ENV === 'production' || process.env.RENDER || process.env.VERCEL);
 
   res.cookie('jwt', token, {
     httpOnly: true,
-    secure: isProduction,
-    sameSite: isProduction ? 'none' : 'lax',
+    secure: isCrossSiteProduction,
+    sameSite: isCrossSiteProduction ? 'none' : 'lax',
     maxAge: 30 * 24 * 60 * 60 * 1000,
   });
 
